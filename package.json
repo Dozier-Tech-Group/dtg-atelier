@@ -20,7 +20,7 @@
     "design:board": "npx --yes serve design -p 4174"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "5.2.0"
+    "@openzeppelin/contracts": "5.6.1"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
