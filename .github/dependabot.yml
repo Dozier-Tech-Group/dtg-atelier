@@ -1,10 +1,17 @@
 # Weekly dependency watch. Updates are reviewed, never auto-merged.
+# npm majors are ignored on purpose: the toolchain is pinned in BLUEPRINT.md,
+# and day one proved the point — every major npm bump Dependabot proposed
+# failed CI (see docs/SHIPLOG.md). Upgrading the toolchain is a decision,
+# not a bump.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: "/"

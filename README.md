@@ -26,7 +26,8 @@ days, not months.
 | [`design/`](design/) | The DESIGN section: art-direction charter, palette rules, trait schema, metadata standard, generative pipeline, preview board. |
 | [`infra/azure/`](infra/azure/) | Bicep + docs tying this repo to the DTG Azure estate (Key Vault, Storage, GitHub OIDC). |
 | [`research/firecrawl/`](research/firecrawl/) | Firecrawl-powered market research CLI. Output stays local and gitignored. |
-| [`.github/`](.github/) | CI — compile, lint, test. No deploy jobs, no secrets, `contents: read`. Dependabot weekly. |
+| [`.github/`](.github/) | CI — compile, lint, test. No deploy jobs, no secrets, `contents: read`. Dependabot weekly, npm majors ignored. |
+| [`docs/SHIPLOG.md`](docs/SHIPLOG.md) | The ship record: verification evidence, hardening applied, and real gas costs per ship. |
 | [`drop.config.example.json`](drop.config.example.json) | Copy to `drop.config.json` (gitignored) and describe your drop. The scripts do the rest. |
 | [`.env.example`](.env.example) | Copy to `.env` (gitignored). Pointers and local-only values — the repo never holds secrets. |
 | [`hardhat.config.js`](hardhat.config.js) | Solidity 0.8.24 / shanghai, optimizer 200 runs. Networks: Robinhood Chain (4663 / 46630), Sepolia, Base, Base Sepolia. Blockscout verification wired in. |
