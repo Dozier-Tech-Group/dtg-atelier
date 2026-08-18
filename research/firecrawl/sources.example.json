@@ -1,0 +1,27 @@
+[
+  {
+    "url": "https://opensea.io/collection/silicon-bayou",
+    "tag": "opensea-silicon-bayou",
+    "why": "Our own live collection as the marketplace renders it — listing state, floor, trait display. The baseline every new drop is measured against."
+  },
+  {
+    "url": "https://robinhoodchain.blockscout.com/address/0xA81aEd6f3a5Faea95197786ba162e706Fd938d20",
+    "tag": "blockscout-silicon-bayou",
+    "why": "The Silicon Bayou contract on Robinhood Chain (4663) — holders, transfers, verified source. Ground truth for on-chain activity."
+  },
+  {
+    "url": "https://docs.robinhood.com/",
+    "tag": "robinhood-chain-docs",
+    "why": "Robinhood chain docs — RPC endpoints, chain behavior, platform rules that constrain a drop. Use --crawl with a small --limit."
+  },
+  {
+    "url": "https://nftpricefloor.com/",
+    "tag": "nft-price-floor",
+    "why": "Floor prices across major collections — the reference frame for pricing a new drop honestly."
+  },
+  {
+    "url": "https://www.cryptoslam.io/",
+    "tag": "cryptoslam",
+    "why": "Cross-chain NFT sales volume rankings — which chains and collections actually move, not which ones are loud."
+  }
+]

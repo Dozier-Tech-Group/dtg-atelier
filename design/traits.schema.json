@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Dozier-Tech-Group/dtg-atelier/master/design/traits.schema.json",
+  "title": "Trait Manifest",
+  "description": "The trait manifest for one drop. Layers compose by zIndex (lowest first). Option weights are positive integers; each layer's weights must sum to exactly 100 (enforced by the pipeline — JSON Schema cannot sum). Optional layers express absence as an option named 'None' whose file is a fully transparent PNG.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["collection", "layers"],
+  "properties": {
+    "collection": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "The collection name, exactly as it will appear in metadata 'name' fields (e.g. 'Pelican Parish' yields 'Pelican Parish #7')."
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "description": "All composable layers. Order in this array is documentation; composition order is zIndex.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "zIndex", "required", "options"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "description": "Layer name. Becomes the metadata 'trait_type' verbatim."
+          },
+          "zIndex": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Composition order, lowest painted first. Must be unique across layers (enforced by the pipeline)."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "true: every token gets an attribute from this layer, and no option may be named 'None'. false: the layer must include a 'None' option (transparent PNG); a 'None' draw emits no attribute."
+          },
+          "options": {
+            "type": "array",
+            "minItems": 1,
+            "description": "The drawable options for this layer.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "weight", "file"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 60,
+                  "description": "Option name. Becomes the metadata 'value' verbatim."
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Selection weight, a positive integer. All weights in a layer must sum to exactly 100."
+                },
+                "file": {
+                  "type": "string",
+                  "minLength": 5,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9/_-]*\\.png$",
+                  "description": "Path to the layer PNG, relative to the drop's assets directory. Forward slashes only. Must exist and match the canvas dimensions."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

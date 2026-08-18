@@ -1,0 +1,25 @@
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+drop.config.json
+
+# Node
+node_modules/
+
+# Hardhat
+artifacts/
+cache/
+coverage/
+coverage.json
+typechain/
+typechain-types/
+
+# Research output (scraped data stays local)
+research/output/
+
+# OS noise
+.DS_Store
+Thumbs.db

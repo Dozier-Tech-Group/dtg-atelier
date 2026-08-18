@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTG Atelier · Design Board</title>
+<style>
+  /* ————————————————————————————————————————————————
+     DTG Atelier — art-direction board
+     Self-contained. Zero external requests. The palette
+     below is the Bayou Standard from design/palette.md.
+     ———————————————————————————————————————————————— */
+  :root{
+    --ink:        #131A16;
+    --ink-2:      #1A231E;
+    --ink-3:      #22302A;
+    --cypress:    #3E5C4B;
+    --brackish:   #6E5335;
+    --copper:     #C56B36;
+    --gold:       #D9A441;
+    --white:      #F3EEE4;
+    --moss:       #93A796;
+    --line:       rgba(243,238,228,.11);
+    --line-soft:  rgba(243,238,228,.06);
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono: ui-monospace,"Cascadia Code","SF Mono",Consolas,Menlo,monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      radial-gradient(1100px 520px at 85% -5%, rgba(197,107,54,.10), transparent 62%),
+      radial-gradient(900px 600px at -10% 105%, rgba(62,92,75,.22), transparent 60%),
+      var(--ink);
+    color:var(--white);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{ /* fine grain, inline SVG — no external request */
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+  .wrap{ position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 28px; }
+
+  /* ————— masthead ————— */
+  .mast{ padding:76px 0 44px; border-bottom:1px solid var(--line); }
+  .kicker{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.34em;
+    text-transform:uppercase; color:var(--copper);
+  }
+  .kicker .rule{ display:inline-block; width:46px; height:1px; background:var(--copper); vertical-align:middle; margin-right:14px; opacity:.8; }
+  h1{
+    font-family:var(--serif); font-weight:400; letter-spacing:.01em;
+    font-size:clamp(2.6rem,6vw,4.2rem); line-height:1.08; margin:18px 0 14px;
+  }
+  h1 em{ font-style:italic; color:var(--gold); }
+  .lede{ max-width:56ch; color:var(--moss); font-size:1.05rem; }
+  .lede strong{ color:var(--white); font-weight:600; }
+  .stats{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .stat{
+    font-family:var(--mono); font-size:.78rem; color:var(--moss);
+    border:1px solid var(--line); border-radius:999px; padding:6px 14px;
+    background:rgba(243,238,228,.03);
+  }
+  .stat b{ color:var(--white); font-weight:600; }
+  .stat.ok b{ color:var(--gold); }
+
+  /* ————— sections ————— */
+  section{ padding:64px 0 12px; }
+  .sec-head{ margin-bottom:34px; }
+  .sec-head .kicker{ color:var(--moss); }
+  .sec-head h2{
+    font-family:var(--serif); font-weight:400; font-size:clamp(1.7rem,3.4vw,2.3rem);
+    margin:10px 0 8px;
+  }
+  .sec-head p{ color:var(--moss); max-width:62ch; font-size:.95rem; }
+  .sec-head code, .note code{
+    font-family:var(--mono); font-size:.85em; color:var(--gold);
+    background:rgba(217,164,65,.08); border-radius:4px; padding:1px 6px;
+  }
+
+  /* ————— palette ————— */
+  .swatches{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; }
+  .swatch{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:var(--ink-2);
+    transition:transform .22s ease, border-color .22s ease;
+  }
+  .swatch:hover{ transform:translateY(-4px); border-color:rgba(243,238,228,.24); }
+  .swatch .field{
+    height:118px; position:relative; display:flex; align-items:flex-end; padding:12px 14px;
+  }
+  .swatch .field .hex{
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; opacity:.92;
+  }
+  .swatch .meta{ padding:14px 16px 16px; border-top:1px solid var(--line-soft); }
+  .swatch .name{ font-family:var(--serif); font-size:1.18rem; }
+  .swatch .role{
+    display:inline-block; margin-left:8px; vertical-align:2px;
+    font-family:var(--mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase;
+    padding:2px 9px; border-radius:999px; border:1px solid var(--line);
+  }
+  .role.core{ color:var(--gold); border-color:rgba(217,164,65,.4); }
+  .role.accent{ color:var(--copper); border-color:rgba(197,107,54,.5); }
+  .role.neutral{ color:var(--moss); }
+  .swatch .use{ color:var(--moss); font-size:.82rem; margin-top:6px; min-height:2.6em; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip{
+    font-family:var(--mono); font-size:.68rem; color:var(--moss);
+    border:1px solid var(--line); border-radius:6px; padding:2px 8px;
+    background:rgba(19,26,22,.5);
+  }
+  .chip b{ font-weight:600; }
+  .chip .aaa{ color:var(--gold); } .chip .aa{ color:var(--white); }
+  .chip .lg{ color:var(--copper); } .chip .no{ color:#c96a5a; }
+  .note{ margin-top:22px; color:var(--moss); font-size:.86rem; max-width:70ch; }
+  .note b{ color:var(--white); }
+
+  /* ————— layer stack ————— */
+  .stack-rows{ position:relative; }
+  .stack-rows::before{ /* the composition axis */
+    content:""; position:absolute; left:169px; top:6px; bottom:6px; width:0;
+    border-left:1px dashed rgba(243,238,228,.16);
+  }
+  .layer-row{
+    display:grid; grid-template-columns:340px 1fr; gap:30px; align-items:center;
+    padding:6px 0;
+  }
+  .plate-cell{ position:relative; height:168px; }
+  .plate{
+    position:absolute; left:50%; top:50%; width:196px; height:196px;
+    transform:translate(-50%,-50%) rotateX(60deg) rotateZ(45deg);
+    border-radius:16px; border:1px solid rgba(243,238,228,.28);
+    box-shadow:0 22px 34px rgba(0,0,0,.42), inset 0 0 0 1px rgba(19,26,22,.3);
+  }
+  .plate.optional{ border-style:dashed; }
+  .plate .dot{
+    position:absolute; inset:0; margin:auto; width:9px; height:9px; border-radius:50%;
+    background:var(--white); opacity:.85; box-shadow:0 0 0 5px rgba(243,238,228,.14);
+  }
+  .layer-card{
+    border:1px solid var(--line); border-radius:14px; background:var(--ink-2);
+    padding:16px 20px;
+  }
+  .layer-card header{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+  .layer-card .z{
+    font-family:var(--mono); font-size:.7rem; color:var(--ink);
+    background:var(--gold); border-radius:6px; padding:1px 8px; font-weight:700;
+  }
+  .layer-card h3{ font-family:var(--serif); font-weight:400; font-size:1.3rem; }
+  .layer-card .req{
+    font-family:var(--mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--moss); border:1px solid var(--line); border-radius:999px; padding:2px 9px;
+  }
+  .opt{ display:grid; grid-template-columns:1fr 120px 44px; gap:14px; align-items:center; padding:7px 0; border-top:1px solid var(--line-soft); }
+  .opt .oname{ font-size:.92rem; }
+  .opt .oname .file{ display:block; font-family:var(--mono); font-size:.68rem; color:var(--moss); opacity:.85; }
+  .bar{ height:6px; border-radius:3px; background:rgba(243,238,228,.08); overflow:hidden; }
+  .bar i{ display:block; height:100%; border-radius:3px; background:linear-gradient(90deg,var(--copper),var(--gold)); }
+  .opt .w{ font-family:var(--mono); font-size:.8rem; color:var(--gold); text-align:right; }
+  .sum{ margin-top:10px; padding-top:8px; border-top:1px solid var(--line-soft);
+        font-family:var(--mono); font-size:.72rem; color:var(--moss); text-align:right; }
+  .sum b{ color:var(--gold); }
+
+  /* ————— sample metadata ————— */
+  .controls{
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-bottom:26px;
+    border:1px solid var(--line); border-radius:14px; background:var(--ink-2); padding:14px 18px;
+  }
+  .controls label{ font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--moss); }
+  .controls input{
+    width:96px; background:var(--ink); color:var(--white); border:1px solid var(--line);
+    border-radius:8px; padding:7px 10px; font-family:var(--mono); font-size:.9rem;
+  }
+  .controls input:focus{ outline:1px solid var(--gold); border-color:var(--gold); }
+  .btn{
+    cursor:pointer; border:1px solid rgba(197,107,54,.6); border-radius:8px;
+    background:linear-gradient(180deg,rgba(197,107,54,.22),rgba(197,107,54,.10));
+    color:var(--white); font-family:var(--mono); font-size:.82rem; padding:8px 16px;
+    transition:background .18s ease, border-color .18s ease;
+  }
+  .btn:hover{ border-color:var(--gold); background:linear-gradient(180deg,rgba(217,164,65,.26),rgba(197,107,54,.12)); }
+  .controls .spacer{ flex:1; }
+  .combo{ font-family:var(--mono); font-size:.75rem; color:var(--moss); }
+  .combo b{ color:var(--gold); font-weight:600; }
+
+  .sample-grid{ display:grid; grid-template-columns:minmax(300px,420px) 1fr; gap:26px; align-items:start; }
+  .render{
+    border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--ink-2);
+  }
+  .render .canvas{ display:flex; flex-direction:column-reverse; aspect-ratio:1/1; }
+  .band{
+    flex:1; display:flex; align-items:center; justify-content:space-between;
+    padding:0 18px; border-top:1px solid rgba(19,26,22,.35);
+  }
+  .band .lname{ font-family:var(--mono); font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; opacity:.75; }
+  .band .oname{ font-family:var(--serif); font-size:1.05rem; }
+  .band.none{
+    background:repeating-linear-gradient(-45deg, rgba(243,238,228,.05) 0 10px, transparent 10px 20px);
+    color:var(--moss);
+  }
+  .render .caption{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+    padding:13px 18px; border-top:1px solid var(--line);
+  }
+  .render .caption .t{ font-family:var(--serif); font-size:1.12rem; }
+  .render .caption .s{ font-family:var(--mono); font-size:.7rem; color:var(--moss); }
+
+  .json-card{ border:1px solid var(--line); border-radius:16px; background:var(--ink-2); overflow:hidden; }
+  .json-card header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 18px; border-bottom:1px solid var(--line);
+  }
+  .json-card header .fname{ font-family:var(--mono); font-size:.85rem; color:var(--gold); }
+  .json-card header .std{ font-family:var(--mono); font-size:.68rem; color:var(--moss); letter-spacing:.1em; text-transform:uppercase; }
+  pre.json{
+    padding:20px 22px; overflow-x:auto; font-family:var(--mono); font-size:.84rem; line-height:1.7;
+    color:var(--white);
+  }
+  .j-k{ color:var(--moss); } .j-s{ color:var(--gold); } .j-p{ color:rgba(243,238,228,.45); } .j-n{ color:var(--copper); }
+
+  /* ————— footer ————— */
+  footer{
+    margin-top:70px; padding:34px 0 60px; border-top:1px solid var(--line);
+    color:var(--moss); font-size:.88rem;
+  }
+  footer .freeze{
+    font-family:var(--serif); font-size:1.25rem; color:var(--white); margin-bottom:8px;
+  }
+  footer .freeze b{ color:var(--copper); font-weight:600; }
+  footer .src{ font-family:var(--mono); font-size:.72rem; margin-top:14px; opacity:.8; }
+
+  @media (max-width:920px){
+    .layer-row{ grid-template-columns:1fr; }
+    .plate-cell{ display:none; }
+    .stack-rows::before{ display:none; }
+    .sample-grid{ grid-template-columns:1fr; }
+    .mast{ padding-top:52px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker"><span class="rule"></span>DTG Atelier · Art-Direction Board</div>
+    <h1>Pelican <em>Parish</em></h1>
+    <p class="lede"><strong>Designed before minted.</strong> This board is the drop's visual
+      contract: the locked palette, the trait layer stack, and the exact metadata the
+      chain will serve — rendered live from the same manifest the pipeline consumes.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section id="palette">
+    <div class="sec-head">
+      <div class="kicker">01 · Palette</div>
+      <h2>The Bayou Standard</h2>
+      <p>Every hex the artwork may use, by role. Contrast ratios are computed live from
+         these hexes against <code>Bayou Ink</code> and <code>Heron White</code> —
+         the board and <code>palette.md</code> cannot drift apart.</p>
+    </div>
+    <div class="swatches" id="swatches"></div>
+    <p class="note"><b>Closed set.</b> A hex not on this board is not in the drop.
+       Tints and shades derived in the renderer are allowed; new base hexes are not.</p>
+  </section>
+
+  <section id="stack">
+    <div class="sec-head">
+      <div class="kicker">02 · Trait Layers</div>
+      <h2>The composition stack</h2>
+      <p>Layers composite bottom-up by <code>zIndex</code>. Weights are positive integers
+         summing to exactly 100 per layer. Dashed plate = optional layer — absence is an
+         explicit <code>None</code> option pointing at a transparent PNG.</p>
+    </div>
+    <div class="stack-rows" id="stackRows"></div>
+  </section>
+
+  <section id="sample">
+    <div class="sec-head">
+      <div class="kicker">03 · Sample Metadata</div>
+      <h2>What the chain will serve</h2>
+      <p>A live draw from the manifest using the pipeline's rules: one seeded PRNG, serial
+         weighted selection in <code>zIndex</code> order, uniqueness by combo hash.
+         Same seed, same token — every time.</p>
+    </div>
+    <div class="controls">
+      <label for="seed">Seed</label>
+      <input id="seed" type="number" value="4663">
+      <label for="tokenId">Token #</label>
+      <input id="tokenId" type="number" value="7" min="1">
+      <button class="btn" id="nextBtn" type="button">Next token →</button>
+      <span class="spacer"></span>
+      <span class="combo">combo <b id="comboHash">········</b></span>
+    </div>
+    <div class="sample-grid">
+      <div class="render">
+        <div class="canvas" id="canvas"></div>
+        <div class="caption">
+          <span class="t" id="renderTitle">—</span>
+          <span class="s" id="renderSub">mulberry32 · zIndex ↑</span>
+        </div>
+      </div>
+      <div class="json-card">
+        <header>
+          <span class="fname" id="jsonFname">7.json</span>
+          <span class="std">OpenSea-compatible · metadata-standard.md</span>
+        </header>
+        <pre class="json" id="jsonOut"></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="freeze">Metadata is immutable after <b>freezeURI()</b>.</div>
+    <p>It ships only when every box in the Design Definition of Done is checked:
+       palette locked, weights sum to 100, every combo renderable, metadata validated,
+       license line chosen. There is no unfreezing.</p>
+    <p class="src">design/board.html · self-contained, zero external requests · data mirrors design/traits.example.json</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* ————————————————————————————————————————————————
+   Embedded design data.
+   DROP mirrors design/traits.example.json exactly.
+   PALETTE mirrors the Bayou Standard in design/palette.md.
+   ———————————————————————————————————————————————— */
+const DROP = {
+  "collection": "Pelican Parish",
+  "layers": [
+    {
+      "name": "Background", "zIndex": 0, "required": true,
+      "options": [
+        { "name": "Brackish Dawn", "weight": 40, "file": "background/brackish-dawn.png" },
+        { "name": "Cypress Dusk",  "weight": 35, "file": "background/cypress-dusk.png" },
+        { "name": "Storm Glass",   "weight": 25, "file": "background/storm-glass.png" }
+      ]
+    },
+    {
+      "name": "Body", "zIndex": 10, "required": true,
+      "options": [
+        { "name": "Heron White",  "weight": 50, "file": "body/heron-white.png" },
+        { "name": "Moss Grey",    "weight": 30, "file": "body/moss-grey.png" },
+        { "name": "Copper Sheen", "weight": 20, "file": "body/copper-sheen.png" }
+      ]
+    },
+    {
+      "name": "Eyes", "zIndex": 20, "required": true,
+      "options": [
+        { "name": "River Amber",  "weight": 60, "file": "eyes/river-amber.png" },
+        { "name": "Lantern Gold", "weight": 40, "file": "eyes/lantern-gold.png" }
+      ]
+    },
+    {
+      "name": "Headwear", "zIndex": 30, "required": false,
+      "options": [
+        { "name": "None",          "weight": 40, "file": "headwear/none.png" },
+        { "name": "Fisher's Cap",  "weight": 35, "file": "headwear/fishers-cap.png" },
+        { "name": "Mardi Feather", "weight": 25, "file": "headwear/mardi-feather.png" }
+      ]
+    }
+  ]
+};
+
+const PALETTE = [
+  { hex:"#3E5C4B", name:"Cypress Green",  role:"core",    use:"Body base, dominant surfaces, dark cards on light grounds" },
+  { hex:"#6E5335", name:"Brackish Brown", role:"core",    use:"Secondary bodies, wood, ground planes" },
+  { hex:"#C56B36", name:"Sunset Copper",  role:"accent",  use:"Eyes, highlights, rare-trait markers, primary buttons" },
+  { hex:"#D9A441", name:"Cane Gold",      role:"accent",  use:"Fine highlights, metallic details, link text on dark" },
+  { hex:"#F3EEE4", name:"Heron White",    role:"neutral", use:"Text on dark, light grounds, line work on cores" },
+  { hex:"#93A796", name:"Spanish Moss",   role:"neutral", use:"Secondary text on dark, muted UI, soft edges" },
+  { hex:"#131A16", name:"Bayou Ink",      role:"neutral", use:"Page and canvas background, deepest shadow, text on light" }
+];
+const INK = "#131A16", WHITE = "#F3EEE4";
+
+/* Board-only presentation colors for the abstract render (palette hexes only). */
+const OPTION_STYLE = {
+  "Background/Brackish Dawn": { bg:"linear-gradient(105deg,#6E5335,#C56B36)", key:"#6E5335" },
+  "Background/Cypress Dusk":  { bg:"linear-gradient(105deg,#3E5C4B,#131A16)", key:"#3E5C4B" },
+  "Background/Storm Glass":   { bg:"linear-gradient(105deg,#93A796,#131A16)", key:"#93A796" },
+  "Body/Heron White":         { bg:"#F3EEE4", key:"#F3EEE4" },
+  "Body/Moss Grey":           { bg:"#93A796", key:"#93A796" },
+  "Body/Copper Sheen":        { bg:"linear-gradient(105deg,#C56B36,#6E5335)", key:"#C56B36" },
+  "Eyes/River Amber":         { bg:"#C56B36", key:"#C56B36" },
+  "Eyes/Lantern Gold":        { bg:"#D9A441", key:"#D9A441" },
+  "Headwear/Fisher's Cap":    { bg:"#3E5C4B", key:"#3E5C4B" },
+  "Headwear/Mardi Feather":   { bg:"linear-gradient(105deg,#D9A441,#C56B36)", key:"#D9A441" }
+};
+const LAYER_PLATE = {
+  "Background": "linear-gradient(135deg,rgba(62,92,75,.9),rgba(19,26,22,.92))",
+  "Body":       "linear-gradient(135deg,rgba(147,167,150,.85),rgba(62,92,75,.85))",
+  "Eyes":       "linear-gradient(135deg,rgba(197,107,54,.88),rgba(110,83,53,.88))",
+  "Headwear":   "linear-gradient(135deg,rgba(217,164,65,.85),rgba(197,107,54,.8))"
+};
+
+/* ————— WCAG contrast ————— */
+function lin(c){ c/=255; return c<=0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); }
+function luminance(hex){
+  const n = parseInt(hex.slice(1),16);
+  return 0.2126*lin(n>>16&255) + 0.7152*lin(n>>8&255) + 0.0722*lin(n&255);
+}
+function contrast(a,b){
+  const [hi,lo] = [luminance(a),luminance(b)].sort((x,y)=>y-x);
+  return (hi+0.05)/(lo+0.05);
+}
+function levelTag(r){
+  if(r>=7)   return '<span class="aaa">AAA</span>';
+  if(r>=4.5) return '<span class="aa">AA</span>';
+  if(r>=3)   return '<span class="lg">AA-large</span>';
+  return '<span class="no">fail</span>';
+}
+function textOn(hex){ return contrast(INK,hex) >= contrast(WHITE,hex) ? INK : WHITE; }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ————— masthead stats ————— */
+(function stats(){
+  const layers = DROP.layers;
+  const combos = layers.reduce((p,L)=>p*L.options.length, 1);
+  const sumsOk = layers.every(L => L.options.reduce((s,o)=>s+o.weight,0) === 100);
+  document.getElementById("stats").innerHTML = [
+    `<span class="stat"><b>${layers.length}</b> layers</span>`,
+    `<span class="stat"><b>${combos}</b> distinct combos</span>`,
+    `<span class="stat ok">Σ weights per layer <b>${sumsOk ? "= 100 ✓" : "≠ 100 ✗"}</b></span>`,
+    `<span class="stat">schema <b>traits.schema.json</b></span>`
+  ].join("");
+})();
+
+/* ————— palette swatches ————— */
+(function swatches(){
+  document.getElementById("swatches").innerHTML = PALETTE.map(c=>{
+    const chips = [];
+    if(c.hex !== INK){
+      const r = contrast(c.hex, INK);
+      chips.push(`<span class="chip">on ink <b>${r.toFixed(1)}</b> ${levelTag(r)}</span>`);
+    }
+    if(c.hex !== WHITE){
+      const r = contrast(c.hex, WHITE);
+      chips.push(`<span class="chip">vs white <b>${r.toFixed(1)}</b> ${levelTag(r)}</span>`);
+    }
+    return `
+    <article class="swatch">
+      <div class="field" style="background:${c.hex}; ${c.hex===INK ? "border-bottom:0; box-shadow:inset 0 0 0 1px rgba(243,238,228,.14);":""}">
+        <span class="hex" style="color:${textOn(c.hex)}">${c.hex}</span>
+      </div>
+      <div class="meta">
+        <span class="name">${c.name}</span><span class="role ${c.role}">${c.role}</span>
+        <p class="use">${c.use}</p>
+        <div class="chips">${chips.join("")}</div>
+      </div>
+    </article>`;
+  }).join("");
+})();
+
+/* ————— layer stack ————— */
+(function stack(){
+  const layers = [...DROP.layers].sort((a,b)=>b.zIndex-a.zIndex); // top plate first
+  document.getElementById("stackRows").innerHTML = layers.map(L=>{
+    const sum = L.options.reduce((s,o)=>s+o.weight,0);
+    const rows = L.options.map(o=>`
+      <div class="opt">
+        <span class="oname">${esc(o.name)}<span class="file">${esc(o.file)}</span></span>
+        <span class="bar"><i style="width:${o.weight}%"></i></span>
+        <span class="w">${o.weight}</span>
+      </div>`).join("");
+    return `
+    <div class="layer-row">
+      <div class="plate-cell">
+        <div class="plate ${L.required ? "" : "optional"}" style="background:${LAYER_PLATE[L.name] || "var(--ink-3)"}">
+          <span class="dot"></span>
+        </div>
+      </div>
+      <div class="layer-card">
+        <header>
+          <span class="z">z${L.zIndex}</span>
+          <h3>${esc(L.name)}</h3>
+          <span class="req">${L.required ? "required" : "optional"}</span>
+        </header>
+        ${rows}
+        <div class="sum">Σ weights = <b>${sum}</b> / 100</div>
+      </div>
+    </div>`;
+  }).join("");
+})();
+
+/* ————— pipeline-faithful sampler ————— */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const ZLAYERS = [...DROP.layers].sort((a,b)=>a.zIndex-b.zIndex);
+const MAX_COMBOS = ZLAYERS.reduce((p,L)=>p*L.options.length,1);
+
+function generate(seed, count){
+  const rng = mulberry32(seed);
+  const seen = new Set(), tokens = [];
+  let retries = 0;
+  while(tokens.length < count){
+    const picks = ZLAYERS.map(L=>{
+      const r = rng()*100; let acc = 0;
+      for(const o of L.options){ acc += o.weight; if(r < acc) return {layer:L, option:o}; }
+      return {layer:L, option:L.options[L.options.length-1]};
+    });
+    const combo = picks.map(p=>`${p.layer.name}=${p.option.name}`).join("|");
+    if(seen.has(combo)){ if(++retries > 1000*count) break; continue; }
+    seen.add(combo);
+    tokens.push({ id: tokens.length+1, picks, combo });
+  }
+  return tokens;
+}
+
+/* combo hash — SHA-256 first 8 hex chars (pipeline display form), FNV-1a fallback */
+async function comboHash(combo){
+  if(window.crypto && crypto.subtle){
+    try{
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(combo));
+      return [...new Uint8Array(buf)].slice(0,4).map(b=>b.toString(16).padStart(2,"0")).join("");
+    }catch(e){ /* fall through */ }
+  }
+  let h = 0x811c9dc5;
+  for(let i=0;i<combo.length;i++){ h ^= combo.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+  return (h>>>0).toString(16).padStart(8,"0");
+}
+
+/* ————— render one token to the board ————— */
+function metadataFor(token){
+  const attributes = token.picks
+    .filter(p => !(p.layer.required === false && p.option.name === "None"))
+    .map(p => ({ trait_type: p.layer.name, value: p.option.name }));
+  return {
+    name: `${DROP.collection} #${token.id}`,
+    description: `One of ${MAX_COMBOS} residents of ${DROP.collection}, rendered from frozen traits on Robinhood Chain. License: CC0 — no rights reserved.`,
+    image: `https://raw.githubusercontent.com/Dozier-Tech-Group/pelican-parish/master/images/${token.id}.png`,
+    attributes
+  };
+}
+function highlightJSON(obj){
+  const pad = n => "  ".repeat(n);
+  const str = s => `<span class="j-s">"${esc(s)}"</span>`;
+  const key = s => `<span class="j-k">"${esc(s)}"</span><span class="j-p">:</span> `;
+  const p = s => `<span class="j-p">${s}</span>`;
+  const lines = [ p("{") ];
+  lines.push(`${pad(1)}${key("name")}${str(obj.name)}${p(",")}`);
+  lines.push(`${pad(1)}${key("description")}${str(obj.description)}${p(",")}`);
+  lines.push(`${pad(1)}${key("image")}${str(obj.image)}${p(",")}`);
+  lines.push(`${pad(1)}${key("attributes")}${p("[")}`);
+  obj.attributes.forEach((a,i)=>{
+    const tail = i < obj.attributes.length-1 ? p(",") : "";
+    lines.push(`${pad(2)}${p("{")} ${key("trait_type")}${str(a.trait_type)}${p(",")} ${key("value")}${str(a.value)} ${p("}")}${tail}`);
+  });
+  lines.push(`${pad(1)}${p("]")}`);
+  lines.push(p("}"));
+  return lines.join("\n");
+}
+function renderBands(token){
+  // flex-direction:column-reverse — first child paints at the bottom (lowest zIndex)
+  return token.picks.map(p=>{
+    const isNone = p.option.name === "None";
+    if(isNone){
+      return `<div class="band none">
+        <span class="lname">${esc(p.layer.name)} · z${p.layer.zIndex}</span>
+        <span class="oname">None — transparent</span>
+      </div>`;
+    }
+    const style = OPTION_STYLE[`${p.layer.name}/${p.option.name}`] || { bg:"var(--ink-3)", key:"#3E5C4B" };
+    const fg = textOn(style.key);
+    return `<div class="band" style="background:${style.bg}; color:${fg}">
+      <span class="lname">${esc(p.layer.name)} · z${p.layer.zIndex}</span>
+      <span class="oname">${esc(p.option.name)}</span>
+    </div>`;
+  }).join("");
+}
+
+const seedEl = document.getElementById("seed");
+const idEl = document.getElementById("tokenId");
+
+function update(){
+  const seed = parseInt(seedEl.value, 10) || 0;
+  let id = Math.max(1, parseInt(idEl.value, 10) || 1);
+  const cap = MAX_COMBOS;
+  if(id > cap){ id = cap; idEl.value = cap; }
+  const run = generate(seed, id);
+  const token = run[run.length-1];
+  if(!token) return;
+
+  document.getElementById("canvas").innerHTML = renderBands(token);
+  document.getElementById("renderTitle").textContent = `${DROP.collection} #${token.id}`;
+  document.getElementById("renderSub").textContent = `mulberry32 · seed ${seed} · zIndex ↑`;
+  document.getElementById("jsonFname").textContent = `${token.id}.json`;
+  document.getElementById("jsonOut").innerHTML = highlightJSON(metadataFor(token));
+
+  const hashEl = document.getElementById("comboHash");
+  hashEl.textContent = "········";
+  comboHash(token.combo).then(h => { hashEl.textContent = h; });
+}
+
+seedEl.addEventListener("input", update);
+idEl.addEventListener("input", update);
+document.getElementById("nextBtn").addEventListener("click", ()=>{
+  idEl.value = Math.min(MAX_COMBOS, (parseInt(idEl.value,10)||0) + 1);
+  update();
+});
+update();
+</script>
+</body>
+</html>

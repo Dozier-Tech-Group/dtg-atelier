@@ -1,0 +1,34 @@
+# atelier-ci — compile, lint, test. Nothing else.
+#
+# Deploys NEVER run in CI. This workflow has contents:read and zero secrets;
+# keep it that way. A PR adding a deploy step or a secrets.* reference here
+# is a security incident, not a review comment. See SECURITY.md.
+
+name: atelier-ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run compile
+
+      - run: npm run lint
+
+      - run: npm test

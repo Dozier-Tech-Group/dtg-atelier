@@ -1,0 +1,44 @@
+{
+  "collection": "Pelican Parish",
+  "layers": [
+    {
+      "name": "Background",
+      "zIndex": 0,
+      "required": true,
+      "options": [
+        { "name": "Brackish Dawn", "weight": 40, "file": "background/brackish-dawn.png" },
+        { "name": "Cypress Dusk", "weight": 35, "file": "background/cypress-dusk.png" },
+        { "name": "Storm Glass", "weight": 25, "file": "background/storm-glass.png" }
+      ]
+    },
+    {
+      "name": "Body",
+      "zIndex": 10,
+      "required": true,
+      "options": [
+        { "name": "Heron White", "weight": 50, "file": "body/heron-white.png" },
+        { "name": "Moss Grey", "weight": 30, "file": "body/moss-grey.png" },
+        { "name": "Copper Sheen", "weight": 20, "file": "body/copper-sheen.png" }
+      ]
+    },
+    {
+      "name": "Eyes",
+      "zIndex": 20,
+      "required": true,
+      "options": [
+        { "name": "River Amber", "weight": 60, "file": "eyes/river-amber.png" },
+        { "name": "Lantern Gold", "weight": 40, "file": "eyes/lantern-gold.png" }
+      ]
+    },
+    {
+      "name": "Headwear",
+      "zIndex": 30,
+      "required": false,
+      "options": [
+        { "name": "None", "weight": 40, "file": "headwear/none.png" },
+        { "name": "Fisher's Cap", "weight": 35, "file": "headwear/fishers-cap.png" },
+        { "name": "Mardi Feather", "weight": 25, "file": "headwear/mardi-feather.png" }
+      ]
+    }
+  ]
+}

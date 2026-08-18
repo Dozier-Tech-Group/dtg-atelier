@@ -1,0 +1,21 @@
+{
+  "token": {
+    "name": "Atelier Token",
+    "symbol": "ATL",
+    "decimals": 18,
+    "maxSupply": "1000000"
+  },
+  "drop": {
+    "name": "Atelier Drop",
+    "symbol": "DROP",
+    "baseURI": "ipfs://REPLACE_WITH_YOUR_CID/",
+    "maxSupply": 198,
+    "royaltyBps": 500,
+    "royaltyReceiver": ""
+  },
+  "editions": {
+    "uri": "ipfs://REPLACE_WITH_YOUR_CID/{id}.json",
+    "royaltyBps": 500,
+    "royaltyReceiver": ""
+  }
+}
